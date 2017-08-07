@@ -65,7 +65,7 @@ export class GamePage {
   // Make the bird jump
   jump() {
       // Add a vertical velocity to the bird
-      this.sprite.body.velocity.y = -350
+      this.sprite.body.velocity.y = -400
   }
 
   // Restart the game
