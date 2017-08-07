@@ -21,14 +21,14 @@ export class GamePage {
   }
 
   preload() {
-    this.game.load.image('bird', 'assets/sprite/bird.png')
+    this.game.load.image('bird', 'assets/sprite/trappy-bird.png')
   }
 
   create() {
       this.stage.backgroundColor = '#fff'
 
       // Change the background color of the game to blue
-      this.game.stage.backgroundColor = '#003bb3'
+      this.game.stage.backgroundColor = '#445669'
 
       // Set the physics system
       this.game.physics.startSystem(Phaser.Physics.ARCADE)
@@ -37,6 +37,8 @@ export class GamePage {
       // this.bird = game.add.sprite(100, 245, 'bird')
       // this.birdSprite(100, 245, 'bird')
       this.sprite = this.game.add.sprite(100, 245, 'bird')
+      this.sprite.scale.x = .3;
+      this.sprite.scale.y = .3;
 
       // Add physics to the bird
       // Needed for: movements, gravity, collisions, etc.
