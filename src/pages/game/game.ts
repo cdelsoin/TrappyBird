@@ -14,6 +14,7 @@ export class GamePage {
   game: Phaser.Game
   stage: Phaser.Stage
   sprite: Phaser.Sprite
+  trappyIsDead
 
   constructor() {
       this.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', { create: this.create, preload: this.preload, update: this.update })
@@ -44,10 +45,19 @@ export class GamePage {
       // Add gravity to the bird to make it fall
       this.sprite.body.gravity.y = 1000
 
-      // Call the 'jump' function when the spacekey is hit
-      this.game.input.onTap.add(function(){
-        this.sprite.body.velocity.y = -350
-      }, this)
+      // Call the 'jump' function when screen is tapped
+      this.game.input.onDown.add(GamePage.prototype.jump, this)
+
+  }
+
+  update() {
+    // If the bird is out of the screen (too high or too low)
+    // Call the 'restartGame' function
+    if (this.sprite.y < 0 || this.sprite.y > window.innerHeight) {
+      this.sprite.y = 245 // puts the sprite back at its starting point
+      this.sprite.body.velocity.y = 0 // slows sprite down to stop
+    }
+
   }
 
   // Make the bird jump
@@ -60,21 +70,8 @@ export class GamePage {
   restartGame() {
       // Start the 'main' state, which restarts the game
       // this.game.state.start('main')
-  }
-
-
-  update() {
-
-    // If the bird is out of the screen (too high or too low)
-    // Call the 'restartGame' function
-    if (this.sprite.y < 0 || this.sprite.y > window.innerHeight) {
-      // this.restartGame()
-      this.sprite.y = 245
-      // this.sprite.body.gravity.y = 1000
-      this.sprite.body.velocity.y = 0
-
-    }
-
+      this.sprite.y = 245 // puts the sprite back at its starting point
+      this.sprite.body.velocity.y = 0 // slows sprite down to stop
   }
 
   // ngOnInit () {
@@ -82,6 +79,6 @@ export class GamePage {
   // }
 
   ngAfterViewInit() {
-    console.log('this', this)
+    // console.log('this', this)
   }
 }
