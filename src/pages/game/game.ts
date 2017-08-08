@@ -14,7 +14,7 @@ export class GamePage {
   game: Phaser.Game
   stage: Phaser.Stage
   sprite: Phaser.Sprite
-  trappyIsDead
+  // coin: Phaser.Sprite
 
   constructor() {
       this.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', { create: this.create, preload: this.preload, update: this.update })
@@ -22,6 +22,7 @@ export class GamePage {
 
   preload() {
     this.game.load.image('bird', 'assets/sprite/trappy-bird.png')
+    // this.game.load.spritesheet('birdsheet', 'assets/sprite/trappy-bird.png', 50, 50)
   }
 
   create() {
@@ -34,11 +35,15 @@ export class GamePage {
       this.game.physics.startSystem(Phaser.Physics.ARCADE)
 
       // Display the bird at the position x=100 and y=245
-      // this.bird = game.add.sprite(100, 245, 'bird')
-      // this.birdSprite(100, 245, 'bird')
       this.sprite = this.game.add.sprite(100, 245, 'bird')
-      this.sprite.scale.x = .3;
-      this.sprite.scale.y = .3;
+
+      // Display bird spritesheet animation
+      // this.sprite = this.game.add.sprite(100, 245, 'birdsheet')
+      // this.sprtie.frame = 3
+
+
+      this.sprite.scale.x = 0.3
+      this.sprite.scale.y = 0.3
 
       // Add physics to the bird
       // Needed for: movements, gravity, collisions, etc.
@@ -48,7 +53,7 @@ export class GamePage {
       this.sprite.body.gravity.y = 1000
 
       // Call the 'jump' function when screen is tapped
-      this.game.input.onDown.add(GamePage.prototype.jump, this)
+      this.game.input.onTap.add(GamePage.prototype.jump, this)
 
   }
 
