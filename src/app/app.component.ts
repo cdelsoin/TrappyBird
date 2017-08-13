@@ -6,6 +6,7 @@ import { GamePage } from '../pages/game/game';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+// import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class MyApp {
     public platform: Platform,
     public menu: MenuController,
     public statusBar: StatusBar,
-    public splashScreen: SplashScreen
+    public splashScreen: SplashScreen,
+    // public screenOrientation: ScreenOrientation
   ) {
     this.initializeApp();
 
@@ -38,6 +40,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      // this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
     });
   }
 
