@@ -16,6 +16,8 @@ export class GamePage {
   trappy: Phaser.Sprite
   city: Phaser.Sprite
   coin: Phaser.Sprite
+  arrow: Phaser.Sprite
+  arrows: any
   coins: any
   floor: any
   scoreCounter: number
@@ -30,6 +32,7 @@ export class GamePage {
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
     this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 240, 240)
+    this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 240, 240)
   }
 
   create() {
@@ -43,8 +46,13 @@ export class GamePage {
     // z-index is decided by order of load (Last to load = on top)
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
     this.city = this.game.add.sprite(0, window.innerHeight-241, 'background')
+
+    // add the Trappy Spritesheet
     this.trappy = this.game.add.sprite(100, 245, 'trappysheet')
+    // name the animation
     this.trappy.animations.add('flap')
+
+    // play the animation .play(name, fps, loop?)
     this.trappy.animations.play('flap', 15, true)
 
     // Resize Trappy
@@ -59,6 +67,12 @@ export class GamePage {
 
     // Create coins every 1.25 seconds by calling createCoins()
     this.game.time.events.loop(1250, GamePage.prototype.createCoins, this)
+
+    // Create group for arrows
+    this.arrows = this.game.add.group()
+
+    // Create arrows every second by calling createArrows()
+    this.game.time.events.loop(1000, GamePage.prototype.createArrows, this)
 
 
     // Add physics to Trappy
@@ -96,6 +110,9 @@ export class GamePage {
     // Call updateScore when a Trappy overlaps with a coin
     this.game.physics.arcade.overlap( this.trappy, this.coins, GamePage.prototype.updateScore, null, this)
 
+    // Call killTrappy when a Trappy overlaps with an arrow
+    this.game.physics.arcade.overlap( this.trappy, this.arrows, GamePage.prototype.killTrappy, null, this)
+
     if (this.trappy.angle < 30)
     this.trappy.angle += 1
 
@@ -132,14 +149,50 @@ export class GamePage {
     this.coin.outOfBoundsKill = true
   }
 
+  createArrows () {
+    // this chooses what range the coin can spawn in
+    this.arrow = this.game.add.sprite(window.innerWidth, this.game.rnd.integerInRange(5, window.innerHeight-180), 'arrowsheet')
+    this.arrows.add(this.arrow)
+    this.game.physics.arcade.enable(this.arrow)
+
+    // name the animation
+    this.arrow.animations.add('shoot')
+
+    // play the animation .play(name, fps, loop?)
+    this.arrow.animations.play('shoot', 20, true)
+
+    // Size arrow and add velocity
+    this.arrow.scale.x = 0.25
+    this.arrow.scale.y = 0.25
+    this.arrow.body.velocity.x = -220
+
+    // Kill the arrow if it leaves the bounds of the world
+    this.arrow.checkWorldBounds = true
+    this.arrow.outOfBoundsKill = true
+  }
+
   updateScore (trappy, coins) {
     // if the coin is already dead then don't do anything
     if (!coins.alive) {
-      return;
+      return
     }
     // Okay, it is alive, so kill it and increment the score!
     coins.kill()
     this.scoreCounter += 1
+    this.scoreLabel.text = this.scoreCounter
+  }
+
+  killTrappy (trappy, arrows) {
+    if (!arrows.alive) {
+      return
+    }
+
+    arrows.kill()
+
+    this.trappy.y = 245 // puts the sprite back at its starting point
+    this.trappy.body.velocity.y = 0 // slows sprite down to stop
+
+    this.scoreCounter = 0
     this.scoreLabel.text = this.scoreCounter
   }
 
