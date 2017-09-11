@@ -28,9 +28,9 @@ export class GamePage {
   preload() {
     this.game.load.image('background', 'assets/stage/background-night.png')
     this.game.load.image('floor', 'assets/stage/floor-night.png')
-    this.game.load.image('trappy', 'assets/sprite/trappy-bird.png')
+    // this.game.load.image('trappy', 'assets/sprite/trappy-bird.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
-    // this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-bird.png', 50, 50) // EXAMPLE CODE
+    this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 240, 240)
   }
 
   create() {
@@ -44,7 +44,13 @@ export class GamePage {
     // z-index is decided by order of load (Last to load = on top)
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
     this.city = this.game.add.sprite(0, window.innerHeight-241, 'background')
-    this.trappy = this.game.add.sprite(100, 245, 'trappy')
+    // this.trappy = this.game.add.sprite(100, 245, 'trappy')
+
+    // (EXAMPLE CODE) Display Trappy spritesheet animation
+    this.trappy = this.game.add.sprite(100, 245, 'trappysheet')
+    this.trappy.animations.add('flap')
+    this.trappy.animations.play('flap', 15, true)
+    // this.trappy.frame = 3
 
     // Resize Trappy
     this.trappy.scale.x = 0.3
@@ -59,9 +65,6 @@ export class GamePage {
     // Create coins every 1.25 seconds by calling createCoins()
     this.game.time.events.loop(1250, GamePage.prototype.createCoins, this)
 
-    // (EXAMPLE CODE) Display Trappy spritesheet animation
-    // this.trappy = this.game.add.sprite(100, 245, 'trappysheet')
-    // this.trappy.frame = 3
 
     // Add physics to Trappy
     // Needed for: movements, gravity, collisions, etc.
