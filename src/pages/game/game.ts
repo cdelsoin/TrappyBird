@@ -31,8 +31,8 @@ export class GamePage {
     this.game.load.image('background', 'assets/stage/background-night.png')
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
-    this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 240, 240)
-    this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 240, 240)
+    this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
+    this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 189, 72)
   }
 
   create() {
