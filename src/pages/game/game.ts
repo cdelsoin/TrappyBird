@@ -28,7 +28,7 @@ export class GamePage {
   }
 
   preload() {
-    this.game.load.image('background', 'assets/stage/background-night.png')
+    this.game.load.image('background', 'assets/stage/background-night-2x.png')
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
     this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
@@ -45,7 +45,7 @@ export class GamePage {
     // Display the different visual elements
     // z-index is decided by order of load (Last to load = on top)
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
-    this.city = this.game.add.sprite(0, window.innerHeight-241, 'background')
+    this.city = this.game.add.sprite(0, window.innerHeight-225, 'background')
 
     // add the Trappy Spritesheet
     this.trappy = this.game.add.sprite(100, 245, 'trappysheet')
@@ -60,7 +60,8 @@ export class GamePage {
     this.trappy.scale.y = 0.3
 
     // Resize city background to fit screen
-    this.city.scale.x = 1.05
+    this.city.scale.x = 0.3
+    this.city.scale.y = 0.3
 
     // Make group for coins to sit in
     this.coins = this.game.add.group()
