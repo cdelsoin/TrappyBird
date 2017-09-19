@@ -81,7 +81,7 @@ export class GamePage {
     this.game.physics.arcade.enable(this.trappy)
 
     // Add gravity to the Trappy to make it fall
-    this.trappy.body.gravity.y = 1000
+    this.trappy.body.gravity.y = 1400
 
     // Call the 'jump' function when screen is tapped
     this.game.input.onTap.add(GamePage.prototype.jump, this)
