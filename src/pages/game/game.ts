@@ -22,6 +22,8 @@ export class GamePage {
   floor: any
   scoreCounter: number
   scoreLabel: any
+  levelLabel: any
+  currentLevel: number
 
   constructor() {
       this.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', { create: this.create, preload: this.preload, update: this.update })
@@ -89,7 +91,11 @@ export class GamePage {
     // This is our score that goes up each time a coin is collected
     // collection and counting happen in update()
     this.scoreCounter = 0
-    this.scoreLabel = this.game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" })
+    this.scoreLabel = this.game.add.text(20, 50, "0", { font: "20px Arial", fill: "#ffffff" })
+
+    this.currentLevel = 1
+    this.levelLabel = this.game.add.text(20, 20, "0", { font: "20px Arial", fill: "#ffffff" })
+    this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
 
     this.trappy.anchor.setTo(-0.2, 0.5)
 
@@ -103,6 +109,10 @@ export class GamePage {
 
       this.scoreCounter = 0
       this.scoreLabel.text = this.scoreCounter
+
+      this.game.time.events.events[0].delay = 1000
+      this.currentLevel = 1
+      this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
     }
 
     // Add repeating floor animation
@@ -181,6 +191,15 @@ export class GamePage {
     coins.kill()
     this.scoreCounter += 1
     this.scoreLabel.text = this.scoreCounter
+
+    if ((this.scoreCounter % 5 === 0) && (this.game.time.events.events[0].delay > 200)) {
+      // this.currentArrowSpawnRate -= 200
+      this.game.time.events.events[0].delay -= 200
+      this.currentLevel += 1
+
+      this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
+      // console.log('arrow spawn', this.game.time.events.events[0].delay)
+    }
   }
 
   killTrappy (trappy, arrows) {
@@ -195,20 +214,10 @@ export class GamePage {
 
     this.scoreCounter = 0
     this.scoreLabel.text = this.scoreCounter
+
+    this.game.time.events.events[0].delay = 1000
+    this.currentLevel = 1
+    this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
   }
 
-  // Restart the game
-  // restartGame() {
-  //     Start the 'main' state, which restarts the game
-  //     this.game.state.start('main')
-  // }
-
-  // ngOnInit () {
-  //
-  // }
-
-  // ngAfterViewInit() {
-  //   console.log('this', this)
-  //   console.log('this.game', this.game)
-  // }
 }
