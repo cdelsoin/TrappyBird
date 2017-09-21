@@ -113,6 +113,8 @@ export class GamePage {
       this.game.time.events.events[0].delay = 1000
       this.currentLevel = 1
       this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
+
+      console.log(this.game.time, this.arrows)
     }
 
     // Add repeating floor animation
@@ -193,12 +195,9 @@ export class GamePage {
     this.scoreLabel.text = this.scoreCounter
 
     if ((this.scoreCounter % 5 === 0) && (this.game.time.events.events[0].delay > 200)) {
-      // this.currentArrowSpawnRate -= 200
       this.game.time.events.events[0].delay -= 200
       this.currentLevel += 1
-
       this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
-      // console.log('arrow spawn', this.game.time.events.events[0].delay)
     }
   }
 
