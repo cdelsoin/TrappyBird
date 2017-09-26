@@ -148,7 +148,7 @@ export class GamePage {
 
   createCoins () {
     // this chooses what range the coin can spawn in
-    this.coin = this.game.add.sprite(window.innerWidth, this.game.rnd.integerInRange(5, window.innerHeight-120), 'coin')
+    this.coin = this.game.add.sprite(window.innerWidth, this.game.rnd.integerInRange(5, window.innerHeight-100), 'coin')
     this.coins.add(this.coin)
     this.game.physics.arcade.enable(this.coin)
 
@@ -164,7 +164,7 @@ export class GamePage {
 
   createArrows () {
     // this chooses what range the coin can spawn in
-    this.arrow = this.game.add.sprite(window.innerWidth, this.game.rnd.integerInRange(5, window.innerHeight-180), 'arrowsheet')
+    this.arrow = this.game.add.sprite(window.innerWidth, this.game.rnd.integerInRange(5, window.innerHeight-100), 'arrowsheet')
     this.arrows.add(this.arrow)
     this.game.physics.arcade.enable(this.arrow)
 
