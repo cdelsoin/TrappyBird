@@ -26,6 +26,10 @@ export class GamePage {
   currentLevel: number
   currentTimeElapsed: any
   timer: any
+  levelOneLoop: any
+  levelTwoLoop: any
+  levelThreeLoop: any
+  levelFourLoop: any
   levelFiveLoop: any
   isLevelOne: boolean
   isLevelTwo: boolean
@@ -121,41 +125,6 @@ export class GamePage {
 
   update() {
     this.currentTimeElapsed = Math.floor((this.timer._now - this.timer._started) / 1000)
-    // // lets set difficulty (by spawning arrows)
-    if (this.currentTimeElapsed === 1 ) {
-      if (this.isLevelOne) return
-      this.game.time.events.repeat(1000, 16, GamePage.prototype.createArrows, this)
-      this.isLevelOne = true
-      this.currentLevel = 1
-    }
-
-    if (this.currentTimeElapsed === 16) {
-      if (this.isLevelTwo) return
-      this.game.time.events.repeat(800, 19, GamePage.prototype.createArrows, this)
-      this.isLevelTwo = true
-      this.currentLevel = 2
-    }
-
-    if (this.currentTimeElapsed === 30) {
-      if (this.isLevelThree) return
-      this.game.time.events.repeat(600, 26, GamePage.prototype.createArrows, this)
-      this.isLevelThree = true
-      this.currentLevel = 3
-    }
-
-    if (this.currentTimeElapsed === 46) {
-      if (this.isLevelFour) return
-      this.game.time.events.repeat(400, 38, GamePage.prototype.createArrows, this)
-      this.isLevelFour = true
-      this.currentLevel = 4
-    }
-
-    if (this.currentTimeElapsed === 61) {
-      if (this.isLevelFive) return
-      this.levelFiveLoop = this.game.time.events.loop(200, GamePage.prototype.createArrows, this)
-      this.isLevelFive = true
-      this.currentLevel = 6
-    }
 
     // Reset Trappy's position if hits the floor or the ceiling
     if (this.trappy.y > window.innerHeight-117) {
@@ -189,6 +158,43 @@ export class GamePage {
 
     if (this.trappy.angle < 30)
     this.trappy.angle += 1
+
+    // // lets set difficulty (by spawning arrows)
+    if (this.currentTimeElapsed === 1 ) {
+      if (this.isLevelOne) return
+      this.levelOneLoop = this.game.time.events.repeat(1000, 16, GamePage.prototype.createArrows, this)
+      this.isLevelOne = true
+      this.currentLevel = 1
+    }
+
+    if (this.currentTimeElapsed === 16) {
+      if (this.isLevelTwo) return
+      this.levelTwoLoop = this.game.time.events.repeat(800, 19, GamePage.prototype.createArrows, this)
+      this.isLevelTwo = true
+      this.currentLevel = 2
+    }
+
+    if (this.currentTimeElapsed === 30) {
+      if (this.isLevelThree) return
+      this.levelThreeLoop = this.game.time.events.repeat(600, 26, GamePage.prototype.createArrows, this)
+      this.isLevelThree = true
+      this.currentLevel = 3
+    }
+
+    if (this.currentTimeElapsed === 46) {
+      if (this.isLevelFour) return
+      this.levelFourLoop = this.game.time.events.repeat(400, 38, GamePage.prototype.createArrows, this)
+      this.isLevelFour = true
+      this.currentLevel = 4
+    }
+
+    if (this.currentTimeElapsed === 61) {
+      if (this.isLevelFive) return
+      this.levelFiveLoop = this.game.time.events.loop(200, GamePage.prototype.createArrows, this)
+      this.isLevelFive = true
+      this.currentLevel = 6
+    }
+
 
     this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
 
@@ -284,6 +290,10 @@ export class GamePage {
     this.isLevelThree = false
     this.isLevelFour = false
     this.isLevelFive = false
+    this.game.time.events.remove(this.levelOneLoop)
+    this.game.time.events.remove(this.levelTwoLoop)
+    this.game.time.events.remove(this.levelThreeLoop)
+    this.game.time.events.remove(this.levelFourLoop)
     this.game.time.events.remove(this.levelFiveLoop)
     this.timer.destroy()
     this.timer = this.game.time.create(false)
