@@ -24,6 +24,14 @@ export class GamePage {
   scoreLabel: any
   levelLabel: any
   currentLevel: number
+  currentTimeElapsed: any
+  timer: any
+  levelFiveLoop: any
+  isLevelOne: boolean
+  isLevelTwo: boolean
+  isLevelThree: boolean
+  isLevelFour: boolean
+  isLevelFive: boolean
   flapAudio: any
   coinAudio: any
 
@@ -79,7 +87,7 @@ export class GamePage {
     this.arrows = this.game.add.group()
 
     // Create arrows every second by calling createArrows()
-    this.game.time.events.loop(1000, GamePage.prototype.createArrows, this)
+    // this.game.time.events.loop(1000, GamePage.prototype.createArrows, this)
 
 
     // Add physics to Trappy
@@ -106,9 +114,49 @@ export class GamePage {
 
     this.trappy.anchor.setTo(-0.2, 0.5)
 
+    this.timer = this.game.time.create(false)
+    this.timer.start()
+
   }
 
   update() {
+    this.currentTimeElapsed = Math.floor((this.timer._now - this.timer._started) / 1000)
+    // // lets set difficulty (by spawning arrows)
+    if (this.currentTimeElapsed === 1 ) {
+      if (this.isLevelOne) return
+      this.game.time.events.repeat(1000, 16, GamePage.prototype.createArrows, this)
+      this.isLevelOne = true
+      this.currentLevel = 1
+    }
+
+    if (this.currentTimeElapsed === 16) {
+      if (this.isLevelTwo) return
+      this.game.time.events.repeat(800, 19, GamePage.prototype.createArrows, this)
+      this.isLevelTwo = true
+      this.currentLevel = 2
+    }
+
+    if (this.currentTimeElapsed === 30) {
+      if (this.isLevelThree) return
+      this.game.time.events.repeat(600, 26, GamePage.prototype.createArrows, this)
+      this.isLevelThree = true
+      this.currentLevel = 3
+    }
+
+    if (this.currentTimeElapsed === 46) {
+      if (this.isLevelFour) return
+      this.game.time.events.repeat(400, 38, GamePage.prototype.createArrows, this)
+      this.isLevelFour = true
+      this.currentLevel = 4
+    }
+
+    if (this.currentTimeElapsed === 61) {
+      if (this.isLevelFive) return
+      this.levelFiveLoop = this.game.time.events.loop(200, GamePage.prototype.createArrows, this)
+      this.isLevelFive = true
+      this.currentLevel = 6
+    }
+
     // Reset Trappy's position if hits the floor or the ceiling
     if (this.trappy.y > window.innerHeight-117) {
       this.trappy.y = 245 // puts the sprite back at its starting point
@@ -117,11 +165,17 @@ export class GamePage {
       this.scoreCounter = 0
       this.scoreLabel.text = this.scoreCounter
 
-      this.game.time.events.events[0].delay = 1000
-      this.currentLevel = 1
-      this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
 
-      console.log(this.game.time, this.arrows)
+      this.isLevelOne = false
+      this.isLevelTwo = false
+      this.isLevelThree = false
+      this.isLevelFour = false
+      this.isLevelFive = false
+      this.game.time.events.remove(this.levelFiveLoop)
+      this.timer.destroy()
+      this.timer = this.game.time.create(false)
+      this.timer.start()
+
     }
 
     // Add repeating floor animation
@@ -135,6 +189,8 @@ export class GamePage {
 
     if (this.trappy.angle < 30)
     this.trappy.angle += 1
+
+    this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
 
   }
 
@@ -158,7 +214,7 @@ export class GamePage {
 
   createCoins () {
     // this chooses what range the coin can spawn in
-    this.coin = this.game.add.sprite(window.innerWidth, this.game.rnd.integerInRange(5, window.innerHeight-100), 'coin')
+    this.coin = this.game.add.sprite(window.innerWidth, this.game.rnd.integerInRange(5, window.innerHeight-120), 'coin')
     this.coins.add(this.coin)
     this.game.physics.arcade.enable(this.coin)
 
@@ -170,11 +226,13 @@ export class GamePage {
     // Kill the coin if it leaves the bounds of the world
     this.coin.checkWorldBounds = true
     this.coin.outOfBoundsKill = true
+
+
   }
 
   createArrows () {
     // this chooses what range the coin can spawn in
-    this.arrow = this.game.add.sprite(window.innerWidth, this.game.rnd.integerInRange(5, window.innerHeight-100), 'arrowsheet')
+    this.arrow = this.game.add.sprite(window.innerWidth, this.game.rnd.integerInRange(5, window.innerHeight-120), 'arrowsheet')
     this.arrows.add(this.arrow)
     this.game.physics.arcade.enable(this.arrow)
 
@@ -205,11 +263,6 @@ export class GamePage {
     this.scoreCounter += 1
     this.scoreLabel.text = this.scoreCounter
 
-    if ((this.scoreCounter % 5 === 0) && (this.game.time.events.events[0].delay > 200)) {
-      this.game.time.events.events[0].delay -= 200
-      this.currentLevel += 1
-      this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
-    }
   }
 
   killTrappy (trappy, arrows) {
@@ -225,9 +278,16 @@ export class GamePage {
     this.scoreCounter = 0
     this.scoreLabel.text = this.scoreCounter
 
-    this.game.time.events.events[0].delay = 1000
     this.currentLevel = 1
-    this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
+    this.isLevelOne = false
+    this.isLevelTwo = false
+    this.isLevelThree = false
+    this.isLevelFour = false
+    this.isLevelFive = false
+    this.game.time.events.remove(this.levelFiveLoop)
+    this.timer.destroy()
+    this.timer = this.game.time.create(false)
+    this.timer.start()
   }
 
 }
