@@ -104,6 +104,7 @@ export class GamePage {
     // Call the 'jump' function when screen is tapped
     this.game.input.onTap.add(GamePage.prototype.jump, this)
 
+    // add audio clips to the game
     this.flapAudio = this.game.add.audio('flap')
     this.coinAudio = this.game.add.audio('coin')
 
@@ -131,16 +132,26 @@ export class GamePage {
       this.trappy.y = 245 // puts the sprite back at its starting point
       this.trappy.body.velocity.y = 0 // slows sprite down to stop
 
+      // reset score
       this.scoreCounter = 0
       this.scoreLabel.text = this.scoreCounter
 
-
+      // reset levels
       this.isLevelOne = false
       this.isLevelTwo = false
       this.isLevelThree = false
       this.isLevelFour = false
       this.isLevelFive = false
+
+      // reset arrow loops
+      this.game.time.events.remove(this.levelOneLoop)
+      this.game.time.events.remove(this.levelTwoLoop)
+      this.game.time.events.remove(this.levelThreeLoop)
+      this.game.time.events.remove(this.levelFourLoop)
       this.game.time.events.remove(this.levelFiveLoop)
+      this.game.time.events.remove(this.levelFiveLoop)
+
+      // restart the timer
       this.timer.destroy()
       this.timer = this.game.time.create(false)
       this.timer.start()
@@ -158,6 +169,8 @@ export class GamePage {
 
     if (this.trappy.angle < 30)
     this.trappy.angle += 1
+
+    this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
 
     // // lets set difficulty (by spawning arrows)
     if (this.currentTimeElapsed === 1 ) {
@@ -194,9 +207,6 @@ export class GamePage {
       this.isLevelFive = true
       this.currentLevel = 6
     }
-
-
-    this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
 
   }
 
@@ -281,20 +291,26 @@ export class GamePage {
     this.trappy.y = 245 // puts the sprite back at its starting point
     this.trappy.body.velocity.y = 0 // slows sprite down to stop
 
+    // reset score
     this.scoreCounter = 0
     this.scoreLabel.text = this.scoreCounter
 
-    this.currentLevel = 1
+    // reset levels
     this.isLevelOne = false
     this.isLevelTwo = false
     this.isLevelThree = false
     this.isLevelFour = false
     this.isLevelFive = false
+
+    // reset arrow loops
     this.game.time.events.remove(this.levelOneLoop)
     this.game.time.events.remove(this.levelTwoLoop)
     this.game.time.events.remove(this.levelThreeLoop)
     this.game.time.events.remove(this.levelFourLoop)
     this.game.time.events.remove(this.levelFiveLoop)
+    this.game.time.events.remove(this.levelFiveLoop)
+
+    // restart the timer
     this.timer.destroy()
     this.timer = this.game.time.create(false)
     this.timer.start()
