@@ -24,6 +24,8 @@ export class GamePage {
   scoreLabel: any
   levelLabel: any
   currentLevel: number
+  flapAudio: any
+  coinAudio: any
 
   constructor() {
       this.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', { create: this.create, preload: this.preload, update: this.update })
@@ -35,6 +37,8 @@ export class GamePage {
     this.game.load.image('coin', 'assets/sprite/coin.png')
     this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
     this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 189, 72)
+    this.game.load.audio('flap', 'assets/audio/wing-flap.wav')
+    this.game.load.audio('coin', 'assets/audio/coin.wav')
   }
 
   create() {
@@ -88,6 +92,9 @@ export class GamePage {
     // Call the 'jump' function when screen is tapped
     this.game.input.onTap.add(GamePage.prototype.jump, this)
 
+    this.flapAudio = this.game.add.audio('flap')
+    this.coinAudio = this.game.add.audio('coin')
+
     // This is our score that goes up each time a coin is collected
     // collection and counting happen in update()
     this.scoreCounter = 0
@@ -135,6 +142,9 @@ export class GamePage {
   jump() {
     // Add a vertical velocity to Trappy
     this.trappy.body.velocity.y = -400
+
+    //play a flap sound
+    this.flapAudio.play()
 
     // Create an animation on Trappy
     var animation = this.game.add.tween(this.trappy)
@@ -191,6 +201,7 @@ export class GamePage {
     }
     // Okay, it is alive, so kill it and increment the score!
     coins.kill()
+    this.coinAudio.play()
     this.scoreCounter += 1
     this.scoreLabel.text = this.scoreCounter
 
