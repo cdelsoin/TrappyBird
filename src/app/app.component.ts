@@ -12,7 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class TrappyApp {
   @ViewChild(Nav) nav: Nav;
 
   // make GamePage the root (or first) page
