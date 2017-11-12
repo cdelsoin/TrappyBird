@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, MenuController, Nav } from 'ionic-angular';
 
 import { GamePage } from '../pages/game/game';
+import { HomePage } from '../pages/home/home';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -16,7 +17,7 @@ export class TrappyApp {
   @ViewChild(Nav) nav: Nav;
 
   // make GamePage the root (or first) page
-  rootPage = GamePage;
+  rootPage = HomePage;
   pages: Array<{title: string, component: any}>;
 
   constructor(
@@ -30,7 +31,8 @@ export class TrappyApp {
 
     // set our app's pages
     this.pages = [
-      { title: 'Trappy Bird', component: GamePage }
+      { title: 'Trappy Bird', component: GamePage },
+      { title: 'Trappy Bird Home', component: HomePage }
     ];
   }
 

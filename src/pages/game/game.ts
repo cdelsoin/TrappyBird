@@ -47,8 +47,13 @@ export class GamePage {
     this.game.load.image('background', 'assets/stage/background-night-2x.png')
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
+    this.game.load.image('banner', 'assets/sprite/trappy-lockup.png')
+
+
     this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
     this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 189, 72)
+
+
     this.game.load.audio('flap', 'assets/audio/wing-flap.wav')
     this.game.load.audio('coin', 'assets/audio/coin.wav')
   }
