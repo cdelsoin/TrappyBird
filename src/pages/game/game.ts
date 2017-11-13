@@ -310,7 +310,7 @@ export class Play extends Phaser.State {
 
   updateScore (trappy, coins) {
 
-    if (this.isTrappyDead) {
+    if (this.isTrappyDead || this.trappyCantJump) {
       return
     }
     // if the coin is already dead then don't do anything
