@@ -381,7 +381,7 @@ export class Play extends Phaser.State {
     }
     // Okay, it is alive, so kill it and increment the score!
     coins.kill()
-    this.coinAudio.play()
+    this.coinAudio.play("", 0, 0.2)
     this.scoreCounter += 1
     this.scoreLabel.text = this.scoreCounter
 
