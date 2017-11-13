@@ -425,9 +425,9 @@ export class How extends Phaser.State {
 
     this.trappyHowTo = this.game.add.text(this.game.world.centerX, this.game.world.centerY-190, "Tap the screen to Flap Trappy", { font: "18px Arial", fill: "#ffffff" })
     this.trappyHowTo.anchor.setTo(0.5, 0.5)
-    this.coinHowTo = this.game.add.text(this.game.world.centerX, this.game.world.centerY-60, "Get your money up. Collect coins.", { font: "18px Arial", fill: "#ffffff" })
+    this.coinHowTo = this.game.add.text(this.game.world.centerX, this.game.world.centerY-60, "Get Trappy's money up. Collect coins.", { font: "18px Arial", fill: "#ffffff" })
     this.coinHowTo.anchor.setTo(0.5, 0.5)
-    this.arrowHowTo = this.game.add.text(this.game.world.centerX, this.game.world.centerY+55, "These guys kill you... avoid them", { font: "18px Arial", fill: "#ffffff" })
+    this.arrowHowTo = this.game.add.text(this.game.world.centerX, this.game.world.centerY+55, "These guys kill Trappy... avoid them", { font: "18px Arial", fill: "#ffffff" })
     this.arrowHowTo.anchor.setTo(0.5, 0.5)
   }
 
