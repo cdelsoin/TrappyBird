@@ -209,6 +209,10 @@ export class Play extends Phaser.State {
     // Reset Trappy's position if hits the floor or the ceiling
     if (this.trappy.y > window.innerHeight-117) {
 
+      if (this.isTrappyDead) {
+        return
+      }
+
       this.isTrappyDead = true
       this.trappy.animations.stop()
       this.trappy.body.velocity.y = 0
