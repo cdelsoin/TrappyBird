@@ -28,7 +28,7 @@ export class Start extends Phaser.State {
   game: Phaser.Game
   stage: Phaser.Stage
   trappy: Phaser.Sprite
-  city: Phaser.Sprite
+  city: any
   banner: Phaser.Sprite
   button: any
   floor: any
@@ -53,8 +53,8 @@ export class Start extends Phaser.State {
 
     // Display the different visual elements
     // z-index is decided by order of load (Last to load = on top)
+    this.city = this.game.add.tileSprite(0, window.innerHeight-225, 1500, 510,'background')
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
-    this.city = this.game.add.sprite(0, window.innerHeight-225, 'background')
     this.banner = this.game.add.sprite(this.game.world.centerX, window.innerHeight-550, 'banner')
     this.button = this.game.add.button(this.game.world.centerX, window.innerHeight-300, 'button', Start.prototype.startGame)
     // this.button.prototype = Object.create(Phaser.Sprite.prototype)
@@ -101,6 +101,7 @@ export class Start extends Phaser.State {
 
     // Add repeating floor animation
     this.floor.tilePosition.x -= 2
+    this.city.tilePosition.x -= 1.3
 
   }
 
@@ -115,7 +116,7 @@ export class Play extends Phaser.State {
   game: Phaser.Game
   stage: Phaser.Stage
   trappy: Phaser.Sprite
-  city: Phaser.Sprite
+  city: any
   coin: Phaser.Sprite
   arrow: Phaser.Sprite
   arrows: any
@@ -164,8 +165,8 @@ export class Play extends Phaser.State {
 
     // Display the different visual elements
     // z-index is decided by order of load (Last to load = on top)
+    this.city = this.game.add.tileSprite(0, window.innerHeight-225, 1500, 510,'background')
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
-    this.city = this.game.add.sprite(0, window.innerHeight-225, 'background')
 
     // add the Trappy Spritesheet
     this.trappy = this.game.add.sprite(100, 245, 'trappysheet')
@@ -264,6 +265,7 @@ export class Play extends Phaser.State {
 
     // Add repeating floor animation
     this.floor.tilePosition.x -= 2
+    this.city.tilePosition.x -= 1.3
 
     // Call updateScore when a Trappy overlaps with a coin
     this.game.physics.arcade.overlap( this.trappy, this.coins, Play.prototype.updateScore, null, this)
