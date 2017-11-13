@@ -57,10 +57,9 @@ export class Start extends Phaser.State {
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
     this.banner = this.game.add.sprite(this.game.world.centerX, window.innerHeight-550, 'banner')
     this.button = this.game.add.button(this.game.world.centerX, window.innerHeight-300, 'button', Start.prototype.startGame)
-    // this.button.prototype = Object.create(Phaser.Sprite.prototype)
-    // this.button.constructor = this.button
+
     // add the Trappy Spritesheet
-    this.trappy = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-100, 'trappysheet')
+    this.trappy = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-105, 'trappysheet')
     // name the animation
     this.trappy.animations.add('flap')
 
@@ -89,12 +88,6 @@ export class Start extends Phaser.State {
     // Add physics to Trappy
     // Needed for: movements, gravity, collisions, etc.
     this.game.physics.arcade.enable(this.trappy)
-
-    // Add gravity to the Trappy to make it fall
-    // this.trappy.body.gravity.y = 1400
-    // this.game.physics.arcade.enable(this.button)
-    // this.button.inputEnabled = true
-    // this.button.events.onInputDown.add(Start.prototype.startGame, this)
   }
 
   update() {
@@ -120,6 +113,8 @@ export class Play extends Phaser.State {
   coin: Phaser.Sprite
   scoreCoin: Phaser.Sprite
   arrow: Phaser.Sprite
+  tryButton: any
+  isTrappyDead: boolean
   arrows: any
   coins: any
   floor: any
@@ -133,6 +128,7 @@ export class Play extends Phaser.State {
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
     this.game.load.image('banner', 'assets/sprite/trappy-lockup.png')
+    this.game.load.image('tryButton', 'assets/buttons/tryagain.png')
 
 
     this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
@@ -157,6 +153,7 @@ export class Play extends Phaser.State {
 
     // add the Trappy Spritesheet
     this.trappy = this.game.add.sprite(100, 245, 'trappysheet')
+    this.isTrappyDead = false
     // name the animation
     this.trappy.animations.add('flap')
 
@@ -213,13 +210,25 @@ export class Play extends Phaser.State {
     // Reset Trappy's position if hits the floor or the ceiling
     if (this.trappy.y > window.innerHeight-117) {
 
-      this.state.start('Start', true, false)
+      this.isTrappyDead = true
+      this.trappy.animations.stop()
+      this.trappy.body.velocity.y = 0
+      this.trappy.body.gravity.y = 0
+
+
+
+      this.tryButton = this.game.add.button(this.game.world.centerX, window.innerHeight-300, 'tryButton', Start.prototype.startGame)
+      this.tryButton.scale.x = 0.4
+      this.tryButton.scale.y = 0.4
+      this.tryButton.anchor.setTo(0.5, 0.5)
+
+    } else {
+      // Add repeating floor animation
+      this.floor.tilePosition.x -= 2
+      this.city.tilePosition.x -= 1.3
 
     }
 
-    // Add repeating floor animation
-    this.floor.tilePosition.x -= 2
-    this.city.tilePosition.x -= 1.3
 
     // Call updateScore when a Trappy overlaps with a coin
     this.game.physics.arcade.overlap( this.trappy, this.coins, Play.prototype.updateScore, null, this)
@@ -234,6 +243,10 @@ export class Play extends Phaser.State {
 
   // Make Trappy jump
   jump() {
+
+    if (this.isTrappyDead) {
+      return
+    }
     // Add a vertical velocity to Trappy
     this.trappy.body.velocity.y = -400
 
@@ -291,6 +304,10 @@ export class Play extends Phaser.State {
   }
 
   updateScore (trappy, coins) {
+
+    if (this.isTrappyDead) {
+      return
+    }
     // if the coin is already dead then don't do anything
     if (!coins.alive) {
       return
@@ -304,6 +321,20 @@ export class Play extends Phaser.State {
   }
 
   killTrappy (trappy, arrows) {
-    this.state.start('Start', true, false)
+
+    this.isTrappyDead = true
+    this.trappy.animations.stop()
+
+    // if the arrow is already dead then don't do anything
+    if (!arrows.alive) {
+      return
+    }
+
+    arrows.kill()
+
+    this.tryButton = this.game.add.button(this.game.world.centerX, window.innerHeight-300, 'tryButton', Start.prototype.startGame)
+    this.tryButton.scale.x = 0.4
+    this.tryButton.scale.y = 0.4
+    this.tryButton.anchor.setTo(0.5, 0.5)
   }
 }
