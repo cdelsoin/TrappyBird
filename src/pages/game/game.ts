@@ -114,6 +114,7 @@ export class Play extends Phaser.State {
   arrow: Phaser.Sprite
   tryButton: any
   isTrappyDead: boolean
+  trappyCantJump: boolean
   arrows: any
   coins: any
   floor: any
@@ -153,6 +154,7 @@ export class Play extends Phaser.State {
     // add the Trappy Spritesheet
     this.trappy = this.game.add.sprite(100, 245, 'trappysheet')
     this.isTrappyDead = false
+    this.trappyCantJump = false
     // name the animation
     this.trappy.animations.add('flap')
 
@@ -230,24 +232,24 @@ export class Play extends Phaser.State {
       this.floor.tilePosition.x -= 2
       this.city.tilePosition.x -= 1.3
 
+      // Call updateScore when a Trappy overlaps with a coin
+      this.game.physics.arcade.overlap( this.trappy, this.coins, Play.prototype.updateScore, null, this)
+
+      // Call killTrappy when a Trappy overlaps with an arrow
+      this.game.physics.arcade.overlap( this.trappy, this.arrows, Play.prototype.killTrappy, null, this)
+
+      if (this.trappy.angle < 30)
+      this.trappy.angle += 1
     }
 
 
-    // Call updateScore when a Trappy overlaps with a coin
-    this.game.physics.arcade.overlap( this.trappy, this.coins, Play.prototype.updateScore, null, this)
-
-    // Call killTrappy when a Trappy overlaps with an arrow
-    this.game.physics.arcade.overlap( this.trappy, this.arrows, Play.prototype.killTrappy, null, this)
-
-    if (this.trappy.angle < 30)
-    this.trappy.angle += 1
 
   }
 
   // Make Trappy jump
   jump() {
 
-    if (this.isTrappyDead) {
+    if (this.isTrappyDead || this.trappyCantJump) {
       return
     }
     // Add a vertical velocity to Trappy
@@ -325,11 +327,7 @@ export class Play extends Phaser.State {
 
   killTrappy (trappy, arrows) {
 
-    if (this.isTrappyDead) {
-      return
-    }
-
-    this.isTrappyDead = true
+    this.trappyCantJump = true
     this.trappy.animations.stop()
 
     // if the arrow is already dead then don't do anything
