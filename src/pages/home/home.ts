@@ -1,4 +1,6 @@
 import { Component } from '@angular/core'
+import { NavController } from 'ionic-angular'
+import { GamePage } from '../game/game';
 
 // import pixi, p2 and phaser ce
 import "pixi"
@@ -16,27 +18,25 @@ export class HomePage {
   trappy: Phaser.Sprite
   city: Phaser.Sprite
   banner: Phaser.Sprite
-  button: Phaser.Sprite
+  button: any
   floor: any
+  nav: any = this.navCtrl
 
-  constructor() {
+  constructor(public navCtrl: NavController) {
       this.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', { create: this.create, preload: this.preload, update: this.update })
+      this.game["homepage"] = this
+      console.log('megathis', this, this.game)
   }
 
   preload() {
+
     this.game.load.image('background', 'assets/stage/background-night-2x.png')
     this.game.load.image('floor', 'assets/stage/floor-night.png')
-    // this.game.load.image('coin', 'assets/sprite/coin.png')
     this.game.load.image('banner', 'assets/sprite/trappy-lockup.png')
     this.game.load.image('button', 'assets/buttons/start.png')
 
 
     this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
-    // this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 189, 72)
-
-
-    // this.game.load.audio('flap', 'assets/audio/wing-flap.wav')
-    // this.game.load.audio('coin', 'assets/audio/coin.wav')
   }
 
   create() {
@@ -52,6 +52,9 @@ export class HomePage {
     this.city = this.game.add.sprite(0, window.innerHeight-225, 'background')
     this.banner = this.game.add.sprite(this.game.world.centerX, window.innerHeight-550, 'banner')
     this.button = this.game.add.sprite(this.game.world.centerX, window.innerHeight-300, 'button')
+    this.button["homepage"] = HomePage
+    // this.button.prototype = Object.create(Phaser.Sprite.prototype)
+    // this.button.constructor = this.button
     // add the Trappy Spritesheet
     this.trappy = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-100, 'trappysheet')
     // name the animation
@@ -79,15 +82,15 @@ export class HomePage {
     this.button.anchor.setTo(0.5, 0.5)
 
 
-
     // Add physics to Trappy
     // Needed for: movements, gravity, collisions, etc.
     this.game.physics.arcade.enable(this.trappy)
 
     // Add gravity to the Trappy to make it fall
     // this.trappy.body.gravity.y = 1400
-
-
+    // this.game.physics.arcade.enable(this.button)
+    this.button.inputEnabled = true
+    this.button.events.onInputDown.add(HomePage.prototype.startGame, HomePage)
   }
 
   update() {
@@ -95,6 +98,11 @@ export class HomePage {
     // Add repeating floor animation
     this.floor.tilePosition.x -= 2
 
+  }
+
+  startGame() {
+    console.log(HomePage.prototype,)
+    this.navCtrl.push('GamePage');
   }
 
 }

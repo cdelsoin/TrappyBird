@@ -17,7 +17,7 @@ export class TrappyApp {
   @ViewChild(Nav) nav: Nav;
 
   // make GamePage the root (or first) page
-  rootPage = HomePage;
+  rootPage = GamePage;
   pages: Array<{title: string, component: any}>;
 
   constructor(
