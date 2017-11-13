@@ -4,7 +4,6 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { TrappyApp } from './app.component';
 
 import { GamePage } from '../pages/game/game';
-import { HomePage } from '../pages/home/home';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -14,7 +13,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   declarations: [
     TrappyApp,
     GamePage,
-    HomePage
   ],
   imports: [
     BrowserModule,
@@ -24,7 +22,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     TrappyApp,
     GamePage,
-    HomePage
   ],
   providers: [
     StatusBar,
