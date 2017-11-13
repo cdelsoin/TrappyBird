@@ -337,10 +337,6 @@ export class Play extends Phaser.State {
 
     arrows.kill()
 
-    this.tryButton = this.game.add.button(this.game.world.centerX, window.innerHeight-300, 'tryButton', Start.prototype.startGame)
-    this.tryButton.scale.x = 0.4
-    this.tryButton.scale.y = 0.4
-    this.tryButton.anchor.setTo(0.5, 0.5)
   }
 }
 
