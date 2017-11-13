@@ -118,26 +118,13 @@ export class Play extends Phaser.State {
   trappy: Phaser.Sprite
   city: any
   coin: Phaser.Sprite
+  scoreCoin: Phaser.Sprite
   arrow: Phaser.Sprite
   arrows: any
   coins: any
   floor: any
   scoreCounter: number
   scoreLabel: any
-  levelLabel: any
-  currentLevel: number
-  currentTimeElapsed: any
-  timer: any
-  levelOneLoop: any
-  levelTwoLoop: any
-  levelThreeLoop: any
-  levelFourLoop: any
-  levelFiveLoop: any
-  isLevelOne: boolean
-  isLevelTwo: boolean
-  isLevelThree: boolean
-  isLevelFour: boolean
-  isLevelFive: boolean
   flapAudio: any
   coinAudio: any
 
@@ -187,14 +174,12 @@ export class Play extends Phaser.State {
     // Make group for coins to sit in
     this.coins = this.game.add.group()
 
-    // Create coins every 1.25 seconds by calling createCoins()
-    this.game.time.events.loop(1250, Play.prototype.createCoins, this)
-
     // Create group for arrows
     this.arrows = this.game.add.group()
 
-    // Create arrows every second by calling createArrows()
-    // this.game.time.events.loop(1000, Play.prototype.createArrows, this)
+    // Create coins every 1.25 seconds by calling createCoins()
+    this.game.time.events.loop(1250, Play.prototype.createCoins, this)
+    this.game.time.events.loop(500, Play.prototype.createArrows, this)
 
 
     // Add physics to Trappy
@@ -214,52 +199,21 @@ export class Play extends Phaser.State {
     // This is our score that goes up each time a coin is collected
     // collection and counting happen in update()
     this.scoreCounter = 0
-    this.scoreLabel = this.game.add.text(20, 50, "0", { font: "20px Arial", fill: "#ffffff" })
-
-    this.currentLevel = 1
-    this.levelLabel = this.game.add.text(20, 20, "0", { font: "20px Arial", fill: "#ffffff" })
-    this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
+    this.scoreCoin = this.game.add.sprite(20, 20, 'coin')
+    this.scoreCoin.scale.x = 0.15
+    this.scoreCoin.scale.y = 0.15
+    this.scoreLabel = this.game.add.text(40, 20, "0", { font: "18px Arial", fill: "#ffffff" })
 
     this.trappy.anchor.setTo(-0.2, 0.5)
-
-    this.timer = this.game.time.create(false)
-    this.timer.start()
 
   }
 
   update() {
-    this.currentTimeElapsed = Math.floor((this.timer._now - this.timer._started) / 1000)
 
     // Reset Trappy's position if hits the floor or the ceiling
     if (this.trappy.y > window.innerHeight-117) {
 
       this.state.start('Start', true, false)
-      // this.trappy.y = 245 // puts the sprite back at its starting point
-      // this.trappy.body.velocity.y = 0 // slows sprite down to stop
-      //
-      // // reset score
-      // this.scoreCounter = 0
-      // this.scoreLabel.text = this.scoreCounter
-      //
-      // // reset levels
-      // this.isLevelOne = false
-      // this.isLevelTwo = false
-      // this.isLevelThree = false
-      // this.isLevelFour = false
-      // this.isLevelFive = false
-      //
-      // // reset arrow loops
-      // this.game.time.events.remove(this.levelOneLoop)
-      // this.game.time.events.remove(this.levelTwoLoop)
-      // this.game.time.events.remove(this.levelThreeLoop)
-      // this.game.time.events.remove(this.levelFourLoop)
-      // this.game.time.events.remove(this.levelFiveLoop)
-      // this.game.time.events.remove(this.levelFiveLoop)
-      //
-      // // restart the timer
-      // this.timer.destroy()
-      // this.timer = this.game.time.create(false)
-      // this.timer.start()
 
     }
 
@@ -275,44 +229,6 @@ export class Play extends Phaser.State {
 
     if (this.trappy.angle < 30)
     this.trappy.angle += 1
-
-    this.levelLabel.text = 'LVL' + ' ' + this.currentLevel
-
-    // // lets set difficulty (by spawning arrows)
-    if (this.currentTimeElapsed === 1 ) {
-      if (this.isLevelOne) return
-      this.levelOneLoop = this.game.time.events.repeat(1000, 16, Play.prototype.createArrows, this)
-      this.isLevelOne = true
-      this.currentLevel = 1
-    }
-
-    if (this.currentTimeElapsed === 16) {
-      if (this.isLevelTwo) return
-      this.levelTwoLoop = this.game.time.events.repeat(800, 19, Play.prototype.createArrows, this)
-      this.isLevelTwo = true
-      this.currentLevel = 2
-    }
-
-    if (this.currentTimeElapsed === 30) {
-      if (this.isLevelThree) return
-      this.levelThreeLoop = this.game.time.events.repeat(600, 26, Play.prototype.createArrows, this)
-      this.isLevelThree = true
-      this.currentLevel = 3
-    }
-
-    if (this.currentTimeElapsed === 46) {
-      if (this.isLevelFour) return
-      this.levelFourLoop = this.game.time.events.repeat(400, 38, Play.prototype.createArrows, this)
-      this.isLevelFour = true
-      this.currentLevel = 4
-    }
-
-    if (this.currentTimeElapsed === 61) {
-      if (this.isLevelFive) return
-      this.levelFiveLoop = this.game.time.events.loop(200, Play.prototype.createArrows, this)
-      this.isLevelFive = true
-      this.currentLevel = 6
-    }
 
   }
 
@@ -389,37 +305,5 @@ export class Play extends Phaser.State {
 
   killTrappy (trappy, arrows) {
     this.state.start('Start', true, false)
-    // if (!arrows.alive) {
-    //   return
-    // }
-    //
-    // arrows.kill()
-    //
-    // this.trappy.y = 245 // puts the sprite back at its starting point
-    // this.trappy.body.velocity.y = 0 // slows sprite down to stop
-    //
-    // // reset score
-    // this.scoreCounter = 0
-    // this.scoreLabel.text = this.scoreCounter
-    //
-    // // reset levels
-    // this.isLevelOne = false
-    // this.isLevelTwo = false
-    // this.isLevelThree = false
-    // this.isLevelFour = false
-    // this.isLevelFive = false
-    //
-    // // reset arrow loops
-    // this.game.time.events.remove(this.levelOneLoop)
-    // this.game.time.events.remove(this.levelTwoLoop)
-    // this.game.time.events.remove(this.levelThreeLoop)
-    // this.game.time.events.remove(this.levelFourLoop)
-    // this.game.time.events.remove(this.levelFiveLoop)
-    // this.game.time.events.remove(this.levelFiveLoop)
-    //
-    // // restart the timer
-    // this.timer.destroy()
-    // this.timer = this.game.time.create(false)
-    // this.timer.start()
   }
 }
