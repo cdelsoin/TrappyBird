@@ -99,7 +99,6 @@ export class Start extends Phaser.State {
   }
 
   startGame() {
-    console.log(Start.prototype, this)
     this.game.state.start('Play', true, false);
   }
 }
@@ -321,6 +320,10 @@ export class Play extends Phaser.State {
   }
 
   killTrappy (trappy, arrows) {
+
+    if (this.isTrappyDead) {
+      return
+    }
 
     this.isTrappyDead = true
     this.trappy.animations.stop()
