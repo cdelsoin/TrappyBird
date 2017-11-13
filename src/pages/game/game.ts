@@ -99,7 +99,7 @@ export class Start extends Phaser.State {
   }
 
   startGame() {
-    this.game.state.start('How', true, false);
+    this.game.state.start('Play', true, false);
   }
 }
 
