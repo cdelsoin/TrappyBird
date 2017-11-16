@@ -31,14 +31,16 @@ export class Start extends Phaser.State {
   city: any
   floor: any
   banner: Phaser.Sprite
-  button: any
+  startButton: any
+  howButton: any
 
   preload() {
 
     this.game.load.image('background', 'assets/stage/background-night-2x.png')
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('banner', 'assets/sprite/trappy-lockup.png')
-    this.game.load.image('button', 'assets/buttons/start.png')
+    this.game.load.image('startButton', 'assets/buttons/start.png')
+    this.game.load.image('howButton', 'assets/buttons/help.png')
 
 
     this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
@@ -56,7 +58,8 @@ export class Start extends Phaser.State {
     this.city = this.game.add.tileSprite(0, window.innerHeight-225, 1500, 510,'background')
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
     this.banner = this.game.add.sprite(this.game.world.centerX, window.innerHeight-550, 'banner')
-    this.button = this.game.add.button(this.game.world.centerX, window.innerHeight-300, 'button', Start.prototype.startGame)
+    this.startButton = this.game.add.button(this.game.world.centerX-35, window.innerHeight-300, 'startButton', Start.prototype.startGame)
+    this.howButton = this.game.add.button(this.game.world.centerX+70, window.innerHeight-300, 'howButton', Start.prototype.howTo)
 
     // add the Trappy Spritesheet
     this.trappy = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-105, 'trappysheet')
@@ -77,12 +80,16 @@ export class Start extends Phaser.State {
     this.banner.scale.x = 0.4
     this.banner.scale.y = 0.4
 
-    this.button.scale.x = 0.4
-    this.button.scale.y = 0.4
+    this.startButton.scale.x = 0.25
+    this.startButton.scale.y = 0.25
+
+    this.howButton.scale.x = 0.25
+    this.howButton.scale.y = 0.25
 
     this.banner.anchor.setTo(0.5, 0.5)
     this.trappy.anchor.setTo(0.5, 0.5)
-    this.button.anchor.setTo(0.5, 0.5)
+    this.startButton.anchor.setTo(0.5, 0.5)
+    this.howButton.anchor.setTo(0.5, 0.5)
 
 
     // Add physics to Trappy
@@ -101,6 +108,10 @@ export class Start extends Phaser.State {
   startGame() {
     this.game.state.start('Play', true, false);
   }
+
+  howTo() {
+    this.game.state.start('How', true, false);
+  }
 }
 
 export class Play extends Phaser.State {
@@ -112,9 +123,10 @@ export class Play extends Phaser.State {
   coin: Phaser.Sprite
   scoreCoin: Phaser.Sprite
   arrow: Phaser.Sprite
-  tryButton: any
+  retryButton: any
+  homeButton: any
   isTrappyDead: boolean
-  trappyCantJump: boolean
+  isTrappyDying: boolean
   arrows: any
   coins: any
   floor: any
@@ -128,7 +140,8 @@ export class Play extends Phaser.State {
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
     this.game.load.image('banner', 'assets/sprite/trappy-lockup.png')
-    this.game.load.image('tryButton', 'assets/buttons/tryagain.png')
+    this.game.load.image('retryButton', 'assets/buttons/retry.png')
+    this.game.load.image('homeButton', 'assets/buttons/home.png')
 
 
     this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
@@ -154,7 +167,7 @@ export class Play extends Phaser.State {
     // add the Trappy Spritesheet
     this.trappy = this.game.add.sprite(100, 245, 'trappysheet')
     this.isTrappyDead = false
-    this.trappyCantJump = false
+    this.isTrappyDying = false
     // name the animation
     this.trappy.animations.add('flap')
 
@@ -222,10 +235,15 @@ export class Play extends Phaser.State {
 
 
 
-      this.tryButton = this.game.add.button(this.game.world.centerX, window.innerHeight-300, 'tryButton', Start.prototype.startGame)
-      this.tryButton.scale.x = 0.4
-      this.tryButton.scale.y = 0.4
-      this.tryButton.anchor.setTo(0.5, 0.5)
+      this.retryButton = this.game.add.button(this.game.world.centerX-35, window.innerHeight-300, 'retryButton', Start.prototype.startGame)
+      this.retryButton.scale.x = 0.25
+      this.retryButton.scale.y = 0.25
+      this.retryButton.anchor.setTo(0.5, 0.5)
+
+      this.homeButton = this.game.add.button(this.game.world.centerX+70, window.innerHeight-300, 'homeButton', Play.prototype.goHome)
+      this.homeButton.scale.x = 0.25
+      this.homeButton.scale.y = 0.25
+      this.homeButton.anchor.setTo(0.5, 0.5)
 
     } else {
       // Add repeating floor animation
@@ -249,9 +267,7 @@ export class Play extends Phaser.State {
   // Make Trappy jump
   jump() {
 
-    if (this.isTrappyDead || this.trappyCantJump) {
-      return
-    }
+    if (this.isTrappyDead || this.isTrappyDying) return
     // Add a vertical velocity to Trappy
     this.trappy.body.velocity.y = -400
 
@@ -310,13 +326,9 @@ export class Play extends Phaser.State {
 
   updateScore (trappy, coins) {
 
-    if (this.isTrappyDead || this.trappyCantJump) {
-      return
-    }
+    if (this.isTrappyDead || this.isTrappyDying) return
     // if the coin is already dead then don't do anything
-    if (!coins.alive) {
-      return
-    }
+    if (!coins.alive) return
     // Okay, it is alive, so kill it and increment the score!
     coins.kill()
     this.coinAudio.play("", 0, 0.2)
@@ -327,16 +339,20 @@ export class Play extends Phaser.State {
 
   killTrappy (trappy, arrows) {
 
-    this.trappyCantJump = true
+    if (this.isTrappyDying) return
+
+    this.isTrappyDying = true
     this.trappy.animations.stop()
 
     // if the arrow is already dead then don't do anything
-    if (!arrows.alive) {
-      return
-    }
+    if (!arrows.alive) return
 
     arrows.kill()
 
+  }
+
+  goHome() {
+    this.game.state.start('Start', true, false);
   }
 }
 
@@ -353,12 +369,14 @@ export class How extends Phaser.State {
   trappyHowTo: any
   coinHowTo: any
   arrowHowTo: any
+  backButton: any
 
 
   preload() {
     this.game.load.image('background', 'assets/stage/background-night-2x.png')
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
+    this.game.load.image('backButton', 'assets/buttons/back.png')
 
     this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
     this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 189, 72)
@@ -375,6 +393,7 @@ export class How extends Phaser.State {
     // z-index is decided by order of load (Last to load = on top)
     this.city = this.game.add.tileSprite(0, window.innerHeight-225, 1500, 510,'background')
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
+    this.backButton = this.game.add.button( 40, 40, 'backButton', How.prototype.goHome)
     // this.banner = this.game.add.sprite(this.game.world.centerX, window.innerHeight-550, 'banner')
     // this.button = this.game.add.button(this.game.world.centerX, window.innerHeight-300, 'button', Start.prototype.startGame)
 
@@ -394,11 +413,11 @@ export class How extends Phaser.State {
     this.city.scale.x = 0.3
     this.city.scale.y = 0.3
 
-    // this.button.scale.x = 0.4
-    // this.button.scale.y = 0.4
+    this.backButton.scale.x = 0.25
+    this.backButton.scale.y = 0.25
 
     this.trappy.anchor.setTo(0.5, 0.5)
-    // this.button.anchor.setTo(0.5, 0.5)
+    this.backButton.anchor.setTo(0.5, 0.5)
 
     this.arrow = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY+10, 'arrowsheet')
     this.arrow.anchor.setTo(0.5, 0.5)
