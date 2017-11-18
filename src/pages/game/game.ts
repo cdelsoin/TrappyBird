@@ -135,6 +135,7 @@ export class Play extends Phaser.State {
   flapAudio: any
   coinAudio: any
   gruntAudio: any
+  theFirstTap: boolean
 
   preload() {
     this.game.load.image('background', 'assets/stage/background-night-2x.png')
@@ -167,7 +168,7 @@ export class Play extends Phaser.State {
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
 
     // add the Trappy Spritesheet
-    this.trappy = this.game.add.sprite(100, 245, 'trappysheet')
+    this.trappy = this.game.add.sprite(100, 180, 'trappysheet')
     this.isTrappyDead = false
     this.isTrappyDying = false
     // name the animation
@@ -190,18 +191,6 @@ export class Play extends Phaser.State {
     // Create group for arrows
     this.arrows = this.game.add.group()
 
-    // Create coins every 1.25 seconds by calling createCoins()
-    this.game.time.events.loop(1250, Play.prototype.createCoins, this)
-    this.game.time.events.loop(500, Play.prototype.createArrows, this)
-
-
-    // Add physics to Trappy
-    // Needed for: movements, gravity, collisions, etc.
-    this.game.physics.arcade.enable(this.trappy)
-
-    // Add gravity to the Trappy to make it fall
-    this.trappy.body.gravity.y = 1400
-
     // Call the 'jump' function when screen is tapped
     this.game.input.onTap.add(Play.prototype.jump, this)
 
@@ -218,7 +207,7 @@ export class Play extends Phaser.State {
     this.scoreCoin.scale.y = 0.15
     this.scoreLabel = this.game.add.text(40, 20, "0", { font: "18px Arial", fill: "#ffffff" })
 
-    this.trappy.anchor.setTo(-0.2, 0.5)
+    this.theFirstTap = true
 
   }
 
@@ -259,8 +248,10 @@ export class Play extends Phaser.State {
       // Call killTrappy when a Trappy overlaps with an arrow
       this.game.physics.arcade.overlap( this.trappy, this.arrows, Play.prototype.killTrappy, null, this)
 
-      if (this.trappy.angle < 30)
-      this.trappy.angle += 1
+      if (!this.theFirstTap) {
+        if (this.trappy.angle < 30)
+        this.trappy.angle += 1
+      }
     }
 
 
@@ -269,6 +260,23 @@ export class Play extends Phaser.State {
 
   // Make Trappy jump
   jump() {
+
+    if (this.theFirstTap) {
+      // Create coins every 1.25 seconds by calling createCoins()
+      this.game.time.events.loop(1250, Play.prototype.createCoins, this)
+      this.game.time.events.loop(500, Play.prototype.createArrows, this)
+
+
+      // Add physics to Trappy
+      // Needed for: movements, gravity, collisions, etc.
+      this.game.physics.arcade.enable(this.trappy)
+
+      // Add gravity to the Trappy to make it fall
+      this.trappy.body.gravity.y = 1400
+      this.trappy.anchor.setTo(-0.2, 0.5)
+
+      this.theFirstTap = false
+    }
 
     if (this.isTrappyDead || this.isTrappyDying) return
     // Add a vertical velocity to Trappy
