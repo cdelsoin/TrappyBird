@@ -410,7 +410,7 @@ export class How extends Phaser.State {
     // this.button = this.game.add.button(this.game.world.centerX, window.innerHeight-300, 'button', Start.prototype.startGame)
 
     // add the Trappy Spritesheet
-    this.trappy = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-250, 'trappysheet')
+    this.trappy = this.game.add.sprite(40, this.game.world.centerY-150, 'trappysheet')
     // name the animation
     this.trappy.animations.add('flap')
 
@@ -418,8 +418,8 @@ export class How extends Phaser.State {
     this.trappy.animations.play('flap', 10, true)
 
     // Resize Trappy
-    this.trappy.scale.x = 0.4
-    this.trappy.scale.y = 0.4
+    this.trappy.scale.x = 0.3
+    this.trappy.scale.y = 0.3
 
     // Resize city background to fit screen
     this.city.scale.x = 0.3
@@ -428,34 +428,34 @@ export class How extends Phaser.State {
     this.backButton.scale.x = 0.25
     this.backButton.scale.y = 0.25
 
-    this.trappy.anchor.setTo(0.5, 0.5)
+    // this.trappy.anchor.setTo(0.5, 0.5)
     this.backButton.anchor.setTo(0.5, 0.5)
 
-    this.arrow = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY+10, 'arrowsheet')
-    this.arrow.anchor.setTo(0.5, 0.5)
+    this.arrow = this.game.add.sprite(40, this.game.world.centerY+10, 'arrowsheet')
+    // this.arrow.anchor.setTo(0.5, 0.5)
     this.arrow.animations.add('shoot')
 
     // play the animation .play(name, fps, loop?)
     this.arrow.animations.play('shoot', 7, true)
 
     // Size arrow
-    this.arrow.scale.x = 0.4
-    this.arrow.scale.y = 0.4
+    this.arrow.scale.x = 0.3
+    this.arrow.scale.y = 0.3
 
-    this.coin = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-110, 'coin')
+    this.coin = this.game.add.sprite(40, this.game.world.centerY-75, 'coin')
 
-    this.coin.anchor.setTo(0.5, 0.5)
+    // this.coin.anchor.setTo(0.5, 0.5)
 
     // Size coin
-    this.coin.scale.x = 0.4
-    this.coin.scale.y = 0.4
+    this.coin.scale.x = 0.3
+    this.coin.scale.y = 0.3
 
-    this.trappyHowTo = this.game.add.text(this.game.world.centerX, this.game.world.centerY-190, "Tap the screen to Flap Trappy", { font: "18px Arial", fill: "#ffffff" })
-    this.trappyHowTo.anchor.setTo(0.5, 0.5)
-    this.coinHowTo = this.game.add.text(this.game.world.centerX, this.game.world.centerY-60, "Get Trappy's money up. Collect coins.", { font: "18px Arial", fill: "#ffffff" })
-    this.coinHowTo.anchor.setTo(0.5, 0.5)
-    this.arrowHowTo = this.game.add.text(this.game.world.centerX, this.game.world.centerY+55, "These guys kill Trappy... avoid them", { font: "18px Arial", fill: "#ffffff" })
-    this.arrowHowTo.anchor.setTo(0.5, 0.5)
+    this.trappyHowTo = this.game.add.text(125, this.game.world.centerY-140, "Tap-To-Flap", { font: "20px Arial", fill: "#ffffff" })
+    // this.trappyHowTo.anchor.setTo(0.5, 0.5)
+    this.arrowHowTo = this.game.add.text(125, this.game.world.centerY+10, "Avoid Arrows", { font: "20px Arial", fill: "#ffffff" })
+    // this.arrowHowTo.anchor.setTo(0.5, 0.5)
+    this.coinHowTo = this.game.add.text(125, this.game.world.centerY-65, "Collect coins", { font: "20px Arial", fill: "#ffffff" })
+    // this.coinHowTo.anchor.setTo(0.5, 0.5)
   }
 
   update() {
