@@ -134,6 +134,7 @@ export class Play extends Phaser.State {
   scoreLabel: any
   flapAudio: any
   coinAudio: any
+  gruntAudio: any
 
   preload() {
     this.game.load.image('background', 'assets/stage/background-night-2x.png')
@@ -150,6 +151,7 @@ export class Play extends Phaser.State {
 
     this.game.load.audio('flap', 'assets/audio/wing-flap.wav')
     this.game.load.audio('coin', 'assets/audio/coin.wav')
+    this.game.load.audio('grunt', 'assets/audio/dead-grunt.wav')
   }
 
   create() {
@@ -206,6 +208,7 @@ export class Play extends Phaser.State {
     // add audio clips to the game
     this.flapAudio = this.game.add.audio('flap')
     this.coinAudio = this.game.add.audio('coin')
+    this.gruntAudio = this.game.add.audio('grunt')
 
     // This is our score that goes up each time a coin is collected
     // collection and counting happen in update()
@@ -344,6 +347,7 @@ export class Play extends Phaser.State {
     this.isTrappyDying = true
     this.trappy.animations.stop()
 
+    this.gruntAudio.play("", 0, 0.3)
     // if the arrow is already dead then don't do anything
     if (!arrows.alive) return
 
