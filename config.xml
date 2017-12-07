@@ -84,4 +84,9 @@
     <plugin name="cordova-plugin-device" spec="1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="cordova-plugin-screen-orientation" spec="~2.0.1" />
+    <plugin name="cordova-plugin-ionic" spec="~2.0.3">
+        <variable name="APP_ID" value="fb33d6ac" />
+        <variable name="CHANNEL_NAME" value="Master" />
+        <variable name="UPDATE_METHOD" value="background" />
+    </plugin>
 </widget>
