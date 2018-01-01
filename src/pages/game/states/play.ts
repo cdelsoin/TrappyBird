@@ -6,15 +6,15 @@ export class Play extends Phaser.State {
 
   game: Phaser.Game
   stage: Phaser.Stage
-  trappy: Phaser.Sprite
+  icy: Phaser.Sprite
   city: any
   coin: Phaser.Sprite
   scoreCoin: Phaser.Sprite
   arrow: Phaser.Sprite
   retryButton: any
   homeButton: any
-  isTrappyDead: boolean
-  isTrappyDying: boolean
+  isIcyDead: boolean
+  isIcyDying: boolean
   arrows: any
   coins: any
   floor: any
@@ -29,13 +29,13 @@ export class Play extends Phaser.State {
     this.game.load.image('background', 'assets/stage/background-night-2x.png')
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
-    this.game.load.image('banner', 'assets/sprite/trappy-lockup.png')
-    this.game.load.image('retryButton', 'assets/buttons/retry.png')
-    this.game.load.image('homeButton', 'assets/buttons/home.png')
+    this.game.load.image('banner', 'assets/sprite/icy-bird-lockup.png')
+    this.game.load.image('retryButton', 'assets/buttons/icy-retry.png')
+    this.game.load.image('homeButton', 'assets/buttons/icy-home.png')
 
 
-    this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
-    // this.game.load.spritesheet('trappysheet', 'assets/sprite/gunter-spritesheet.png', 48, 52)
+    this.game.load.spritesheet('icysheet', 'assets/sprite/icy-spritesheet.png', 180, 114)
+    // this.game.load.spritesheet('icysheet', 'assets/sprite/gunter-spritesheet.png', 48, 52)
     this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 189, 72)
 
 
@@ -56,21 +56,21 @@ export class Play extends Phaser.State {
     this.city = this.game.add.tileSprite(0, window.innerHeight-225, 1500, 510,'background')
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
 
-    // add the Trappy Spritesheet
-    this.trappy = this.game.add.sprite(100, 180, 'trappysheet')
-    this.isTrappyDead = false
-    this.isTrappyDying = false
+    // add the Icy Spritesheet
+    this.icy = this.game.add.sprite(100, 180, 'icysheet')
+    this.isIcyDead = false
+    this.isIcyDying = false
     // name the animation
-    this.trappy.animations.add('flap')
+    this.icy.animations.add('flap')
 
     // play the animation .play(name, fps, loop?)
-    this.trappy.animations.play('flap', 15, true)
+    this.icy.animations.play('flap', 15, true)
 
-    // Resize Trappy
-    this.trappy.scale.x = 0.3
-    this.trappy.scale.y = 0.3
-    // this.trappy.scale.x = 0.8
-    // this.trappy.scale.y = 0.8
+    // Resize Icy
+    this.icy.scale.x = 0.3
+    this.icy.scale.y = 0.3
+    // this.icy.scale.x = 0.8
+    // this.icy.scale.y = 0.8
 
     // Resize city background to fit screen
     this.city.scale.x = 0.3
@@ -104,17 +104,17 @@ export class Play extends Phaser.State {
 
   update() {
 
-    // Reset Trappy's position if hits the floor
-    if (this.trappy.y > window.innerHeight-117) {
+    // Reset Icy's position if hits the floor
+    if (this.icy.y > window.innerHeight-117) {
 
-      if (this.isTrappyDead) {
+      if (this.isIcyDead) {
         return
       }
 
-      this.isTrappyDead = true
-      this.trappy.animations.stop()
-      this.trappy.body.velocity.y = 0
-      this.trappy.body.gravity.y = 0
+      this.isIcyDead = true
+      this.icy.animations.stop()
+      this.icy.body.velocity.y = 0
+      this.icy.body.gravity.y = 0
 
 
 
@@ -128,22 +128,22 @@ export class Play extends Phaser.State {
       this.homeButton.scale.y = 0.25
       this.homeButton.anchor.setTo(0.5, 0.5)
 
-    } else { // if Trappy hasn't hit the floor yet
+    } else { // if Icy hasn't hit the floor yet
 
       // Add repeating floor animation
       this.floor.tilePosition.x -= 2
       this.city.tilePosition.x -= 1.3
 
-      // Call updateScore when a Trappy overlaps with a coin
-      this.game.physics.arcade.overlap( this.trappy, this.coins, Play.prototype.updateScore, null, this)
+      // Call updateScore when a Icy overlaps with a coin
+      this.game.physics.arcade.overlap( this.icy, this.coins, Play.prototype.updateScore, null, this)
 
-      // Call killTrappy when a Trappy overlaps with an arrow
-      this.game.physics.arcade.overlap( this.trappy, this.arrows, Play.prototype.killTrappy, null, this)
+      // Call killIcy when a Icy overlaps with an arrow
+      this.game.physics.arcade.overlap( this.icy, this.arrows, Play.prototype.killIcy, null, this)
 
-      // this keeps Trappy straight before the user starts playing
+      // this keeps Icy straight before the user starts playing
       if (!this.theFirstTap) {
-        if (this.trappy.angle < 30)
-        this.trappy.angle += 1
+        if (this.icy.angle < 30)
+        this.icy.angle += 1
       }
     }
 
@@ -151,7 +151,7 @@ export class Play extends Phaser.State {
 
   }
 
-  // Make Trappy jump
+  // Make Icy jump
   jump() {
 
     if (this.theFirstTap) {
@@ -160,28 +160,28 @@ export class Play extends Phaser.State {
       this.game.time.events.loop(500, Play.prototype.createArrows, this)
 
 
-      // Add physics to Trappy
+      // Add physics to Icy
       // Needed for: movements, gravity, collisions, etc.
-      this.game.physics.arcade.enable(this.trappy)
+      this.game.physics.arcade.enable(this.icy)
 
-      // Add gravity to the Trappy to make it fall
-      this.trappy.body.gravity.y = 1400
-      this.trappy.anchor.setTo(-0.2, 0.5)
+      // Add gravity to the Icy to make it fall
+      this.icy.body.gravity.y = 1400
+      this.icy.anchor.setTo(0.2, 0.5)
 
       this.theFirstTap = false
     }
 
-    if (this.isTrappyDead || this.isTrappyDying) return
-    // Add a vertical velocity to Trappy
-    this.trappy.body.velocity.y = -400
+    if (this.isIcyDead || this.isIcyDying) return
+    // Add a vertical velocity to Icy
+    this.icy.body.velocity.y = -425
 
     //play a flap sound
     this.flapAudio.play()
 
-    // Create an animation on Trappy
-    var animation = this.game.add.tween(this.trappy)
+    // Create an animation on Icy
+    var animation = this.game.add.tween(this.icy)
 
-    // Change the angle of Trappy to -30° in 100 milliseconds
+    // Change the angle of Icy to -30° in 100 milliseconds
     animation.to({angle: -30}, 100)
 
     // And start the animation
@@ -228,10 +228,10 @@ export class Play extends Phaser.State {
     this.arrow.outOfBoundsKill = true
   }
 
-  updateScore (trappy, coins) {
+  updateScore (icy, coins) {
 
-    // dont collect coins or update score if Trappy is dying or is dead
-    if (this.isTrappyDead || this.isTrappyDying) return
+    // dont collect coins or update score if Icy is dying or is dead
+    if (this.isIcyDead || this.isIcyDying) return
     // if the coin is already dead then don't do anything
     if (!coins.alive) return
     // Okay, it is alive, so kill it and increment the score!
@@ -242,13 +242,13 @@ export class Play extends Phaser.State {
 
   }
 
-  killTrappy (trappy, arrows) {
+  killIcy (icy, arrows) {
 
-    // dont kill trappy, he's already dying
-    if (this.isTrappyDying) return
+    // dont kill icy, he's already dying
+    if (this.isIcyDying) return
 
-    this.isTrappyDying = true
-    this.trappy.animations.stop()
+    this.isIcyDying = true
+    this.icy.animations.stop()
 
     this.gruntAudio.play("", 0, 0.3)
     // if the arrow is already dead then don't do anything
