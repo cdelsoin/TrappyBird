@@ -34,8 +34,8 @@ export class Play extends Phaser.State {
     this.game.load.image('homeButton', 'assets/buttons/home.png')
 
 
-    // this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
-    this.game.load.spritesheet('trappysheet', 'assets/sprite/gunter-spritesheet.png', 48, 52)
+    this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
+    // this.game.load.spritesheet('trappysheet', 'assets/sprite/gunter-spritesheet.png', 48, 52)
     this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 189, 72)
 
 
@@ -67,10 +67,10 @@ export class Play extends Phaser.State {
     this.trappy.animations.play('flap', 15, true)
 
     // Resize Trappy
-    // this.trappy.scale.x = 0.3
-    // this.trappy.scale.y = 0.3
-    this.trappy.scale.x = 0.8
-    this.trappy.scale.y = 0.8
+    this.trappy.scale.x = 0.3
+    this.trappy.scale.y = 0.3
+    // this.trappy.scale.x = 0.8
+    // this.trappy.scale.y = 0.8
 
     // Resize city background to fit screen
     this.city.scale.x = 0.3
