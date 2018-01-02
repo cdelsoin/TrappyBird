@@ -6,12 +6,12 @@ export class How extends Phaser.State {
 
   game: Phaser.Game
   stage: Phaser.Stage
-  trappy: Phaser.Sprite
+  icy: Phaser.Sprite
   coin: Phaser.Sprite
   arrow: Phaser.Sprite
   city: any
   floor: any
-  trappyHowTo: any
+  icyHowTo: any
   coinHowTo: any
   arrowHowTo: any
   backButton: any
@@ -21,9 +21,13 @@ export class How extends Phaser.State {
     this.game.load.image('background', 'assets/stage/background-night-2x.png')
     this.game.load.image('floor', 'assets/stage/floor-night.png')
     this.game.load.image('coin', 'assets/sprite/coin.png')
-    this.game.load.image('backButton', 'assets/buttons/back.png')
+    this.game.load.image('backButton', 'assets/buttons/icy-back.png')
 
-    this.game.load.spritesheet('trappysheet', 'assets/sprite/trappy-spritesheet.png', 162, 174)
+    this.game.load.image('coinHowTo', 'assets/text/collect-coins.png')
+    this.game.load.image('arrowHowTo', 'assets/text/avoid-arrows.png')
+    this.game.load.image('icyHowTo', 'assets/text/tap-to-flap.png')
+
+    this.game.load.spritesheet('icysheet', 'assets/sprite/icy-spritesheet.png', 180, 117)
     this.game.load.spritesheet('arrowsheet', 'assets/sprite/arrow-spritesheet.png', 189, 72)
   }
 
@@ -39,6 +43,18 @@ export class How extends Phaser.State {
     this.city = this.game.add.tileSprite(0, window.innerHeight-225, 1500, 510,'background')
     this.floor = this.game.add.tileSprite(0, window.innerHeight-82, 1500, 265, 'floor')
 
+    // add how-to text
+    this.icyHowTo = this.game.add.sprite(125, this.game.world.centerY-140, 'icyHowTo')
+    this.icyHowTo.scale.x = 0.4
+    this.icyHowTo.scale.y = 0.4
+
+    this.arrowHowTo = this.game.add.sprite(125, this.game.world.centerY+10, 'arrowHowTo')
+    this.arrowHowTo.scale.x = 0.4
+    this.arrowHowTo.scale.y = 0.4
+
+    this.coinHowTo = this.game.add.sprite(125, this.game.world.centerY-65, 'coinHowTo')
+    this.coinHowTo.scale.x = 0.4
+    this.coinHowTo.scale.y = 0.4
 
     // add in back button
     this.backButton = this.game.add.button( 40, 40, 'backButton', How.prototype.goHome)
@@ -47,15 +63,15 @@ export class How extends Phaser.State {
     this.backButton.scale.y = 0.25
     this.backButton.anchor.setTo(0.5, 0.5)
 
-    // add the Trappy Spritesheet
-    this.trappy = this.game.add.sprite(40, this.game.world.centerY-150, 'trappysheet')
+    // add the Icy Spritesheet
+    this.icy = this.game.add.sprite(40, this.game.world.centerY-150, 'icysheet')
     // name the animation
-    this.trappy.animations.add('flap')
+    this.icy.animations.add('flap')
     // play the animation .play(name, fps, loop?)
-    this.trappy.animations.play('flap', 10, true)
-    // Resize Trappy
-    this.trappy.scale.x = 0.3
-    this.trappy.scale.y = 0.3
+    this.icy.animations.play('flap', 10, true)
+    // Resize Icy
+    this.icy.scale.x = 0.3
+    this.icy.scale.y = 0.3
 
 
     // Resize city background to fit screen
@@ -79,11 +95,6 @@ export class How extends Phaser.State {
     // Size coin
     this.coin.scale.x = 0.3
     this.coin.scale.y = 0.3
-
-    // add how-to text
-    this.trappyHowTo = this.game.add.text(125, this.game.world.centerY-140, "Tap-To-Flap", { font: "20px Arial", fill: "#ffffff" })
-    this.arrowHowTo = this.game.add.text(125, this.game.world.centerY+10, "Avoid Arrows", { font: "20px Arial", fill: "#ffffff" })
-    this.coinHowTo = this.game.add.text(125, this.game.world.centerY-65, "Collect coins", { font: "20px Arial", fill: "#ffffff" })
   }
 
   update() {

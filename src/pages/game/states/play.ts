@@ -105,7 +105,7 @@ export class Play extends Phaser.State {
   update() {
 
     // Reset Icy's position if hits the floor
-    if (this.icy.y > window.innerHeight-117) {
+    if (this.icy.y > window.innerHeight-125) {
 
       if (this.isIcyDead) {
         return
