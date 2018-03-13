@@ -12,7 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 @Component({
   templateUrl: 'app.html'
 })
-export class TrappyApp {
+export class IcyBird {
   @ViewChild(Nav) nav: Nav;
 
   // make GamePage the root (or first) page
@@ -30,7 +30,7 @@ export class TrappyApp {
 
     // set our app's pages
     this.pages = [
-      { title: 'Trappy Bird', component: GamePage },
+      { title: 'Icy Bird', component: GamePage },
     ];
   }
 

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { TrappyApp } from './app.component';
+import { IcyBird } from './app.component';
 
 import { GamePage } from '../pages/game/game';
 
@@ -11,16 +11,16 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 @NgModule({
   declarations: [
-    TrappyApp,
+    IcyBird,
     GamePage,
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(TrappyApp),
+    IonicModule.forRoot(IcyBird),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    TrappyApp,
+    IcyBird,
     GamePage,
   ],
   providers: [
